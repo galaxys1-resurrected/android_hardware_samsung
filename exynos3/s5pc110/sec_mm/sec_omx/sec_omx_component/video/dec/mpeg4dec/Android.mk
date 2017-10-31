@@ -16,7 +16,7 @@ LOCAL_ARM_MODE := arm
 
 LOCAL_STATIC_LIBRARIES := libSEC_OMX_Vdec libsecosal libsecbasecomponent \
 						libsecmfcdecapi libseccsc
-LOCAL_SHARED_LIBRARIES := libc libdl libcutils libutils libui libhardware
+LOCAL_SHARED_LIBRARIES := libc libdl libcutils libutils libui libhardware liblog
 
 LOCAL_C_INCLUDES := $(OMX_INC) \
 	$(SEC_OMX_INC)/sec \
