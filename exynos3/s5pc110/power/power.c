@@ -213,6 +213,7 @@ static int power_open(const hw_module_t* module __unused, const char* name,
     dev->common.tag = HARDWARE_MODULE_TAG;
     dev->common.module_api_version = POWER_MODULE_API_VERSION_0_3;
     dev->common.hal_api_version = HARDWARE_HAL_API_VERSION;
+    dev->common.name = "S5PC110 Power HAL";
 
     dev->init = omap_power_init;
     dev->powerHint = omap_power_hint;
@@ -246,10 +247,11 @@ struct s5pc110_power_module HAL_MODULE_INFO_SYM = {
             .author = "The Android Open Source Project",
             .methods = &power_module_methods,
         },
-
+#ifndef ANDROID_API_O_OR_LATER
         .init = s5pc110_power_init,
         .setInteractive = s5pc110_power_set_interactive,
         .powerHint = s5pc110_power_hint,
+#endif
     },
 
     .lock = PTHREAD_MUTEX_INITIALIZER,
