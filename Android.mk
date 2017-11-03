@@ -23,7 +23,3 @@ endif
 ifeq ($(BOARD_HAVE_SAMSUNG_WIFI),true)
 include $(SAM_ROOT)/macloader/Android.mk
 endif
-
-# ifeq ($(BOARD_VENDOR),samsung)
-# include $(SAM_ROOT)/ril/Android.mk
-# endif
