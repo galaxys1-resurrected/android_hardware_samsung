@@ -192,6 +192,30 @@ static void s5pc110_power_hint(struct power_module *module, power_hint_t hint,
     }
 }
 
+static void s5pc110_set_feature(struct power_module *module,
+                             feature_t feature, int state)
+{
+    struct s5pc110_power_module *s5pc110_device =
+               (struct s5pc110_power_module *) module;
+
+    if (!s5pc110_device->inited)
+        return;
+
+    switch (feature) {
+    case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
+#ifdef DOUBLE_TAP_TO_WAKE_PATH
+        sysfs_write(DOUBLE_TAP_TO_WAKE_PATH, (state ? "1" : "0"));
+#else
+        /* Silly code to avoid issue of "state" being otherwised unused */
+        if (state)
+            return;
+#endif
+        break;
+    default:
+        break;
+    }
+}
+
 #ifdef ANDROID_API_O_OR_LATER
 static int power_open(const hw_module_t* module __unused, const char* name,
                     hw_device_t** device)
@@ -215,10 +239,10 @@ static int power_open(const hw_module_t* module __unused, const char* name,
     dev->common.hal_api_version = HARDWARE_HAL_API_VERSION;
     dev->common.name = "S5PC110 Power HAL";
 
-    dev->init = omap_power_init;
-    dev->powerHint = omap_power_hint;
-    dev->setInteractive = omap_power_set_interactive;
-    dev->setFeature = omap_set_feature;
+    dev->init = s5pc110_power_init;
+    dev->powerHint = s5pc110_power_hint;
+    dev->setInteractive = s5pc110_power_set_interactive;
+    dev->setFeature = s5pc110_set_feature;
 
     *device = (hw_device_t*)dev;
 
